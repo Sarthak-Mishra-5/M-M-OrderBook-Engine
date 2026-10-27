@@ -17,14 +17,16 @@ void testBasicOrderMatching() {
         assert(trade.quantity == 5);
     });
     
+    // Add buy order
     auto buy_order = std::make_unique<Order>(1, OrderSide::BUY, 100.0, 10);
     order_book.submitOrder(std::move(buy_order));
     
+    // Add matching sell order
     auto sell_order = std::make_unique<Order>(2, OrderSide::SELL, 100.0, 5);
     order_book.submitOrder(std::move(sell_order));
     
     assert(trade_executed);
-    assert(order_book.getBuyOrdersCount() == 1);
+    assert(order_book.getBuyOrdersCount() == 1);  // Partial fill
     assert(order_book.getSellOrdersCount() == 0);
     
     std::cout << "testBasicOrderMatching: PASSED\n";
@@ -50,19 +52,22 @@ void testPriceTimePriority() {
     
     order_book.setTradeCallback([&trade_count](const Trade& trade) {
         trade_count++;
+        // First trade should be at price 99.0 (best sell price)
         if (trade_count == 1) {
             assert(trade.price == 99.0);
         }
     });
     
+    // Add buy order at 100
     auto buy_order = std::make_unique<Order>(1, OrderSide::BUY, 100.0, 10);
     order_book.submitOrder(std::move(buy_order));
     
+    // Add sell orders at different prices
     auto sell_order1 = std::make_unique<Order>(2, OrderSide::SELL, 101.0, 5);
     auto sell_order2 = std::make_unique<Order>(3, OrderSide::SELL, 99.0, 5);
     
     order_book.submitOrder(std::move(sell_order1));
-    order_book.submitOrder(std::move(sell_order2));
+    order_book.submitOrder(std::move(sell_order2));  // This should match first
     
     assert(trade_count == 1);
     

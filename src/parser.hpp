@@ -1,17 +1,24 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <optional>
-#include "types.hpp"
+#include <atomic>
+#include "order_book.hpp"
 
 namespace OrderEngine {
 
 class OrderParser {
 public:
-    std::optional<std::unique_ptr<Order>> parseOrder(const std::string& json);
+    OrderParser();
+    ~OrderParser();
+    
+    std::optional<std::unique_ptr<Order>> parseOrder(const std::string& json_str);
     
 private:
-    std::string extractValue(const std::string& json, const std::string& key);
+    std::atomic<uint64_t> next_order_id_{1};
+    
+    OrderSide parseOrderSide(const std::string& side_str);
 };
 
 } // namespace OrderEngine

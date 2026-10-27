@@ -23,6 +23,7 @@ public:
     OrderBookServer(int port = 8080) : port_(port) {}
     
     void start() {
+        // Initialize components
         order_book_.setTradeCallback([this](const Trade& trade) {
             logger_.logTrade(trade);
             std::cout << "TRADE: Buy Order " << trade.buy_order_id 
@@ -38,12 +39,15 @@ public:
         std::cout << "Ultra-Low Latency Order Book Engine Starting...\n";
         std::cout << "Server listening on port " << port_ << "\n";
         
+        // Start threads
         std::thread console_thread(&OrderBookServer::consoleInputThread, this);
         std::thread stats_thread(&OrderBookServer::statsThread, this);
         std::thread tcp_thread(&OrderBookServer::tcpServerThread, this);
         
+        // Wait for shutdown
         console_thread.join();
         
+        // Cleanup
         running_ = false;
         if (stats_thread.joinable()) stats_thread.join();
         if (tcp_thread.joinable()) tcp_thread.join();
@@ -145,35 +149,65 @@ private:
             return;
         }
         
-        std::cout << "TCP server ready on
-cat > CMakeLists.txt << 'EOF'
-cmake_minimum_required(VERSION 3.12)
-project(OrderBookEngine VERSION 1.0.0 LANGUAGES CXX)
+        std::cout << "TCP server ready on port " << port_ << "\n";
+        
+        while (running_) {
+            sockaddr_in client_addr{};
+            socklen_t client_len = sizeof(client_addr);
+            
+            int client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &client_len);
+            if (client_fd >= 0) {
+                std::thread([this, client_fd]() {
+                    handleClient(client_fd);
+                }).detach();
+            }
+            
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+        
+        close(server_fd);
+    }
+    
+    void handleClient(int client_fd) {
+        char buffer[1024];
+        while (running_) {
+            int bytes_read = read(client_fd, buffer, sizeof(buffer) - 1);
+            if (bytes_read <= 0) break;
+            
+            buffer[bytes_read] = '\0';
+            std::string order_str(buffer);
+            
+            std::istringstream iss(order_str);
+            std::string line;
+            while (std::getline(iss, line)) {
+                if (!line.empty()) {
+                    auto order = parser_.parseOrder(line);
+                    if (order) {
+                        order_book_.submitOrder(std::move(*order));
+                        
+                        std::string response = "ACK: Order received\n";
+                        write(client_fd, response.c_str(), response.length());
+                    }
+                }
+            }
+        }
+        close(client_fd);
+    }
+};
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -DNDEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -Wall -Wextra")
-
-find_package(Threads REQUIRED)
-include_directories(src)
-
-set(SOURCES
-    src/order_book.cpp
-    src/parser.cpp
-    src/logger.cpp
-)
-
-add_executable(order_engine src/main.cpp ${SOURCES})
-target_link_libraries(order_engine Threads::Threads)
-
-file(WRITE ${CMAKE_BINARY_DIR}/run_demo.sh 
-"#!/bin/bash\n"
-"echo 'Starting Order Book Engine Demo...'\n"
-"echo 'Connect via: telnet localhost 8080'\n"
-"echo 'Send JSON orders or use console commands'\n"
-"./order_engine 8080\n"
-)
-
-execute_process(COMMAND chmod +x ${CMAKE_BINARY_DIR}/run_demo.sh)
+int main(int argc, char* argv[]) {
+    int port = 8080;
+    if (argc > 1) {
+        port = std::atoi(argv[1]);
+    }
+    
+    try {
+        OrderBookServer server(port);
+        server.start();
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+    
+    return 0;
+}

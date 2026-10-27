@@ -27,6 +27,7 @@ public:
         T* ptr = available_.top();
         available_.pop();
         
+        // Destroy existing object and construct new one in-place
         ptr->~T();
         new(ptr) T(std::forward<Args>(args)...);
         
