@@ -9,3 +9,10 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -Wall -Wextra")
 
 find_package(Threads REQUIRED)
 include_directories(src)
+
+set(SOURCES
+    src/order_book.cpp
+)
+
+add_executable(order_engine src/main.cpp ${SOURCES})
+target_link_libraries(order_engine Threads::Threads)
