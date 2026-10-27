@@ -1,5 +1,8 @@
 # 🎤 M&M OrderBook Engine
 ### Management & Matching | Sub-15µs Latency | 100K+ Orders/Second
+<p align="center">
+  <i>“You only get one shot at a price.”</i>
+</p>
 
 [![C++17](https://img.shields.io/badge/C++-17-blue.svg)](https://isocpp.org/)
 [![Performance](https://img.shields.io/badge/Latency-~15µs-green.svg)](https://github.com)
@@ -298,25 +301,22 @@ for (int i = 0; i < 1000000; ++i) {
 ## 🌟 **Why Choose M&M?**
 
 ### **For Quant Developers**
-✅ **Real-world complexity** - Not a toy project
-✅ **Industry-standard performance** - Meets institutional requirements
-✅ **Modern C++17** - Best practices and idioms
-✅ **Production-ready** - Error handling, logging, monitoring
+- **Real-world complexity** - Not a toy project
+- **Industry-standard performance** - Meets institutional requirements
+- **Modern C++17** - Best practices and idioms
+- **Production-ready** - Error handling, logging, monitoring
 
 ### **For System Engineers**
-✅ **Scalable architecture** - Multi-threaded, lock-free design
-✅ **Memory efficiency** - Custom allocators, zero-copy operations
-✅ **Platform optimization** - SIMD, cache-friendly algorithms
-✅ **Observability** - Built-in metrics and profiling
+- **Scalable architecture** - Multi-threaded, lock-free design
+- **Memory efficiency** - Custom allocators, zero-copy operations
+- **Platform optimization** - SIMD, cache-friendly algorithms
+- **Observability** - Built-in metrics and profiling
 
 ### **For Trading Firms**
-✅ **Exchange compatibility** - Standard price-time priority
-✅ **Risk management** - Audit trails, position tracking
-✅ **Market data integration** - Real-time feed processing
-✅ **Regulatory compliance** - Trade reporting, monitoring
-
-### **The M&M Philosophy**
-Like a mic drop that leaves the crowd speechless, M&M OrderBook Engine delivers orders with precision that speaks for itself. Management & Matching — two pillars of trading excellence, unified in a system that performs under pressure.
+- **Exchange compatibility** - Standard price-time priority
+- **Risk management** - Audit trails, position tracking
+- **Market data integration** - Real-time feed processing
+- **Regulatory compliance** - Trade reporting, monitoring
 
 ---
 
