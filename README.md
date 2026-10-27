@@ -1,5 +1,5 @@
-# 🚀 Ultra-Low Latency Order Book Engine
-### Exchange-Grade Trading System | Sub-15µs Latency | 100K+ Orders/Second
+# 🎤 M&M OrderBook Engine
+### Management & Matching | Sub-15µs Latency | 100K+ Orders/Second
 
 [![C++17](https://img.shields.io/badge/C++-17-blue.svg)](https://isocpp.org/)
 [![Performance](https://img.shields.io/badge/Latency-~15µs-green.svg)](https://github.com)
@@ -7,6 +7,16 @@
 [![Memory](https://img.shields.io/badge/Memory-Zero%20Allocation-orange.svg)](https://github.com)
 
 > **Production-ready limit order book engine designed for institutional high-frequency trading systems. Achieves exchange-level performance with sub-microsecond precision.**
+
+---
+
+## 🎵 The Story Behind M&M
+
+**M&M** stands for **Management & Matching** — the two core responsibilities of any order book engine:
+- **Management**: Efficient order storage, memory management, and state tracking
+- **Matching**: Fast price-time priority order execution
+
+But there's more to the name. Like Eminem's rapid-fire flow that keeps the crowd moving, this engine processes orders with lightning speed, keeping markets liquid and trades flowing. It's a tribute to precision, performance, and the relentless pursuit of perfection in code.
 
 ## 🎯 **Why This Matters**
 
@@ -23,7 +33,7 @@ In quantitative finance, **microseconds = millions**. This isn't just another co
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    ULTRA-LOW LATENCY ENGINE                     │
+│                  M&M ORDER BOOK ENGINE                          │
 ├─────────────────┬─────────────────┬─────────────────────────────┤
 │   TCP Server    │  Lock-Free      │    Order Book Engine        │
 │   (Port 8080)   │  Order Queue    │   (Price-Time Priority)     │
@@ -95,12 +105,12 @@ std::multimap<double, std::unique_ptr<Order>> sell_orders_;
 ```bash
 # Clone and build
 git clone <repository-url>
-cd orderengine && mkdir build && cd build
+cd mm-orderbook-engine && mkdir build && cd build
 cmake .. && make -j$(nproc)
 
 # Start the engine
 ./run_demo.sh
-# 🎯 Server starts on port 8080 with <15µs latency
+# 🎯 M&M Engine starts on port 8080 with <15µs latency
 ```
 
 ### **Live Trading Simulation**
@@ -285,25 +295,28 @@ for (int i = 0; i < 1000000; ++i) {
 
 ---
 
-## 🌟 **Why Choose This Implementation?**
+## 🌟 **Why Choose M&M?**
 
 ### **For Quant Developers**
-✅ **Real-world complexity** - Not a toy project  
-✅ **Industry-standard performance** - Meets institutional requirements  
-✅ **Modern C++17** - Best practices and idioms  
-✅ **Production-ready** - Error handling, logging, monitoring  
+✅ **Real-world complexity** - Not a toy project
+✅ **Industry-standard performance** - Meets institutional requirements
+✅ **Modern C++17** - Best practices and idioms
+✅ **Production-ready** - Error handling, logging, monitoring
 
-### **For System Engineers**  
-✅ **Scalable architecture** - Multi-threaded, lock-free design  
-✅ **Memory efficiency** - Custom allocators, zero-copy operations  
-✅ **Platform optimization** - SIMD, cache-friendly algorithms  
-✅ **Observability** - Built-in metrics and profiling  
+### **For System Engineers**
+✅ **Scalable architecture** - Multi-threaded, lock-free design
+✅ **Memory efficiency** - Custom allocators, zero-copy operations
+✅ **Platform optimization** - SIMD, cache-friendly algorithms
+✅ **Observability** - Built-in metrics and profiling
 
 ### **For Trading Firms**
-✅ **Exchange compatibility** - Standard price-time priority  
-✅ **Risk management** - Audit trails, position tracking  
-✅ **Market data integration** - Real-time feed processing  
-✅ **Regulatory compliance** - Trade reporting, monitoring  
+✅ **Exchange compatibility** - Standard price-time priority
+✅ **Risk management** - Audit trails, position tracking
+✅ **Market data integration** - Real-time feed processing
+✅ **Regulatory compliance** - Trade reporting, monitoring
+
+### **The M&M Philosophy**
+Like a mic drop that leaves the crowd speechless, M&M OrderBook Engine delivers orders with precision that speaks for itself. Management & Matching — two pillars of trading excellence, unified in a system that performs under pressure.
 
 ---
 

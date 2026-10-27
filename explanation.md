@@ -1,4 +1,4 @@
-# Ultra-Low Latency Order Book Engine - Technical Deep Dive
+# M&M OrderBook Engine - Technical Deep Dive
 
 ## Table of Contents
 1. [Project Overview](#project-overview)
@@ -12,6 +12,13 @@
 ---
 
 ## Project Overview
+
+### What is M&M OrderBook Engine?
+**M&M OrderBook Engine** (Management & Matching) is a high-performance limit order book engine that embodies the dual responsibilities essential to any trading system:
+- **Management**: Efficient order storage, memory management, and state tracking
+- **Matching**: Fast price-time priority order execution
+
+The name is also a subtle nod to Eminem — representing precision, speed, and relentless performance under pressure. Just as a mic drop leaves the crowd speechless, M&M delivers orders with microseconds-level precision that speaks for itself.
 
 ### What is an Order Book?
 An **order book** is the core data structure of any financial exchange. It maintains all pending buy and sell orders for a financial instrument (stocks, bonds, crypto, etc.) and matches them based on price-time priority.
@@ -78,6 +85,8 @@ Result: Matches with sell order at 101.00, executes 30 shares
 │    Thread       │    │ Stats Thread    │    │ (CSV Output)    │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
+
+**The M&M Flow**: Like a seamless verse, orders flow from input to matching to logging, each component performing its role with precision and timing.
 
 ### Threading Model
 **3-Thread Architecture for Maximum Performance:**
@@ -377,7 +386,7 @@ A: "Add: 1) Order cancellation and modification support, 2) Market data feed int
 
 This project demonstrates the intersection of:
 - **Systems Programming**: Low-level optimization and concurrency
-- **Financial Engineering**: Domain-specific algorithms and requirements  
+- **Financial Engineering**: Domain-specific algorithms and requirements
 - **Performance Engineering**: Latency optimization and measurement
 - **Software Architecture**: Scalable, maintainable design patterns
 
@@ -389,3 +398,11 @@ The implementation showcases skills directly applicable to:
 - **Low-latency Microservices**
 
 **Key Differentiator**: This isn't just a toy project—it's an exchange-grade implementation that meets institutional performance requirements and demonstrates deep understanding of both technical and business constraints in quantitative finance.
+
+---
+
+## The M&M Legacy
+
+M&M OrderBook Engine represents the relentless pursuit of perfection in code. Like a performance that leaves the audience wanting more, this engine delivers order matching with such precision and speed that it becomes invisible — orders flow, trades execute, and markets move, all orchestrated by a system that manages and matches with mic-drop certainty.
+
+**Management & Matching**: Two responsibilities, one engine, infinite possibilities.

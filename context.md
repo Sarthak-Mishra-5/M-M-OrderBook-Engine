@@ -1,13 +1,19 @@
-# Context: Ultra-Low Latency Order Book Engine
+# Context: M&M OrderBook Engine
 
 ## Project Overview
 
-This project is a small-scale, high-performance limit order book engine designed to simulate exchange-level order matching for a high-frequency trading (HFT) system. It processes real-time buy and sell orders with ultra-low latency, targeting sub-100µs for order matching. The engine is implemented in C++17, leveraging multithreading, lock-free data structures, and custom memory management to achieve high performance. It supports a FIX-like JSON-based protocol for order input and logs trade data for analysis. The project is intended for a resume, showcasing skills in low-latency systems, concurrent programming, and financial systems.
+**M&M OrderBook Engine** (Management & Matching) is a small-scale, high-performance limit order book engine designed to simulate exchange-level order matching for a high-frequency trading (HFT) system. It processes real-time buy and sell orders with ultra-low latency, targeting sub-100µs for order matching.
+
+The name "M&M" embodies the dual responsibilities of any order book engine:
+- **Management**: Efficient order storage, memory management, and state tracking
+- **Matching**: Fast price-time priority order execution
+
+The project is implemented in C++17, leveraging multithreading, lock-free data structures, and custom memory management to achieve high performance. It supports a FIX-like JSON-based protocol for order input and logs trade data for analysis. The project is intended for a resume, showcasing skills in low-latency systems, concurrent programming, and financial systems.
 
 ## Project Structure
 
 ```
-order-book-engine/
+mm-orderbook-engine/
 ├── src/
 │   ├── main.cpp              # Entry point and main application logic
 │   ├── order_book.hpp        # Order book class declaration
@@ -20,7 +26,7 @@ order-book-engine/
 ├── tests/
 │   └── test_order_book.cpp   # Unit tests for order book
 ├── CMakeLists.txt            # Build configuration
-└── Context.md                # Project documentation
+└── context.md                # Project documentation
 ```
 
 ## Key Features
@@ -32,6 +38,14 @@ order-book-engine/
 - **FIX-like Protocol Parser**: Parse JSON-based order messages (e.g., buy/sell, price, quantity).
 - **Trade Logging**: Record executed trades and order flow in a time-series format for post-trade analysis.
 - **Low Latency**: Target sub-100µs latency for order matching under typical workloads.
+
+## The M&M Philosophy
+
+Like a well-orchestrated performance, M&M OrderBook Engine harmonizes two critical functions:
+- **Management**: Keeping order books organized, memory pools efficient, and state consistent
+- **Matching**: Executing trades with precision and speed that rivals the best in the industry
+
+The project draws inspiration from the relentless pursuit of excellence in both trading systems and performance art — where every microsecond counts and every trade matters.
 
 ## Scope and Constraints
 
