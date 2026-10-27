@@ -13,6 +13,7 @@ include_directories(src)
 set(SOURCES
     src/order_book.cpp
     src/parser.cpp
+    src/logger.cpp
 )
 
 add_executable(order_engine src/main.cpp ${SOURCES})
