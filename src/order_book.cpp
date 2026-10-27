@@ -1,16 +1,70 @@
 #include "order_book.hpp"
-#include <atomic>
 
 namespace OrderEngine {
 
+OrderBook::OrderBook() = default;
+
+OrderBook::~OrderBook() {
+    stop();
+}
+
+void OrderBook::start() {
+    running_ = true;
+    matching_thread_ = std::thread(&OrderBook::matchingThreadFunc, this);
+}
+
+void OrderBook::stop() {
+    running_ = false;
+    queue_cv_.notify_all();
+    if (matching_thread_.joinable()) {
+        matching_thread_.join();
+    }
+}
+
 void OrderBook::submitOrder(std::unique_ptr<Order> order) {
-    processOrder(std::move(order));
+    std::lock_guard<std::mutex> lock(queue_mutex_);
+    order_queue_.push(std::move(order));
+    queue_cv_.notify_one();
+}
+
+void OrderBook::setTradeCallback(TradeCallback callback) {
+    trade_callback_ = callback;
+}
+
+size_t OrderBook::getBuyOrdersCount() const {
+    return buy_orders_.size();
+}
+
+size_t OrderBook::getSellOrdersCount() const {
+    return sell_orders_.size();
+}
+
+void OrderBook::matchingThreadFunc() {
+    while (running_) {
+        std::unique_lock<std::mutex> lock(queue_mutex_);
+        queue_cv_.wait(lock, [this] { return !order_queue_.empty() || !running_; });
+        
+        if (!running_) break;
+        
+        while (!order_queue_.empty()) {
+            auto order = std::move(order_queue_.front());
+            order_queue_.pop();
+            lock.unlock();
+            
+            auto start = std::chrono::high_resolution_clock::now();
+            processOrder(std::move(order));
+            auto end = std::chrono::high_resolution_clock::now();
+            
+            auto latency = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+            latency_stats_.recordLatency(latency);
+            
+            lock.lock();
+        }
+    }
 }
 
 void OrderBook::processOrder(std::unique_ptr<Order> order) {
     if (order->side == OrderSide::BUY) {
-        matchOrders();
-        
         auto it = sell_orders_.begin();
         while (it != sell_orders_.end() && order->quantity > 0) {
             if (order->price >= it->first) {
@@ -31,8 +85,6 @@ void OrderBook::processOrder(std::unique_ptr<Order> order) {
             buy_orders_.insert({order->price, std::move(order)});
         }
     } else {
-        matchOrders();
-        
         auto it = buy_orders_.begin();
         while (it != buy_orders_.end() && order->quantity > 0) {
             if (order->price <= it->first) {
@@ -56,7 +108,6 @@ void OrderBook::processOrder(std::unique_ptr<Order> order) {
 }
 
 void OrderBook::matchOrders() {
-    // Matching logic integrated in processOrder
 }
 
 void OrderBook::executeTrade(Order& buy_order, Order& sell_order, uint32_t quantity) {
