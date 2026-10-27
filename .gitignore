@@ -1,5 +1,5 @@
 # Build directory
-
+build/
 
 # Compiled executables
 *.exe
